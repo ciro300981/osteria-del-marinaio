@@ -9,6 +9,7 @@
     <style>
         body { font-family: Arial, sans-serif; background-color: #0f172a; color: #fff; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .card { background: #1e293b; padding: 30px; border-radius: 12px; max-width: 400px; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center; }
+        .logo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 2px solid #38bdf8; }
         input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; }
         button { background: #38bdf8; color: #0f172a; border: none; padding: 12px; width: 100%; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; }
         button:hover { background: #0ea5e9; }
@@ -20,7 +21,9 @@
 </head>
 <body>
 
+<!-- SCHERMATA 1: FORM DI ISCRIZIONE -->
 <div class="card" id="form-container">
+    <img src="logo.jpg" alt="Osteria del Marinaio" class="logo">
     <h2>Osteria del Marinaio</h2>
     <p>Ottieni subito un <b>buono sconto del 20%</b> sul tuo prossimo pasto!</p>
     <form id="couponForm">
@@ -34,7 +37,9 @@
     </form>
 </div>
 
+<!-- SCHERMATA 2: QR CODE E TIMER (VISIBILE ANCHE DOPO LA GENERAZIONE) -->
 <div class="card hidden" id="coupon-container">
+    <img src="logo.jpg" alt="Osteria del Marinaio" class="logo">
     <h2>Il tuo Buono del 20%</h2>
     <p>Mostra questo QR Code in cassa per convalidare lo sconto.</p>
     <div id="qrcode"></div>
@@ -42,16 +47,19 @@
     <p style="font-size: 0.9em; color: #94a3b8;">Questo buono è valido solo per te e scadrà tra 6 giorni.</p>
 </div>
 
+<!-- SCHERMATA 3: RINGRAZIAMENTO RECENSIONE -->
 <div class="card hidden" id="success-container">
+    <img src="logo.jpg" alt="Osteria del Marinaio" class="logo">
     <h2 style="color: #22c55e;">🎉 Sconto Utilizzato!</h2>
     <p>Grazie per aver cenato all'Osteria del Marinaio. Ti è piaciuta l'esperienza?</p>
     <a href="https://g.page/r/INSERISCI_LINK_RECENSIONI_GOOGLE" class="review-btn" target="_blank">Lascia una Recensione Google ⭐</a>
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPyAyoV7c-lcD-TBO9zeiHh5B0SgKu7mDVSurjw2hI5M3ByBW2kEsbKJTE5h89qZY/exec";
+    // Inserisci qui l'URL della tua Web App di Google Apps Script
+    const SCRIPT_URL = "INSERISCI_QUI_URL_APPS_SCRIPT";
 
-    // Controllo se l'utente ha già richiesto il coupon in passato (blocco IP/Localstorage)
+    // Controllo automatico al caricamento della pagina se esiste già un coupon attivo salvato
     window.addEventListener('DOMContentLoaded', () => {
         const savedId = localStorage.getItem('osteria_coupon_id');
         const savedExpiry = localStorage.getItem('osteria_coupon_expiry');
@@ -73,7 +81,6 @@
         const cognome = document.getElementById('cognome').value;
         const numero = document.getElementById('numero').value;
 
-        // Recupero IP indicativo
         let ip = "127.0.0.1";
         try {
             const ipRes = await fetch('https://api.ipify.org?format=json');
@@ -84,16 +91,16 @@
         const payload = { nome, cognome, numero, ip };
 
         try {
-            const response = await fetch(SCRIPT_URL, {
+            // Invio dei dati al backend Google Sheets tramite Apps Script
+            await fetch(SCRIPT_URL, {
                 method: 'POST',
-                mode: 'no-cors', // Necessario per Google Apps Script
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
-            // Simulazione generazione ID locale nel caso di risposta no-cors
-            const idUnico = 'id_' + Math.random().toString(36.substring(2, 15));
-            const expiryTime = new Date().getTime() + (6 * 24 * 60 * 60 * 1000); // 6 giorni
+            const idUnico = 'id_' + Math.random().toString(36).substring(2, 15);
+            const expiryTime = new Date().getTime() + (6 * 24 * 60 * 60 * 1000); // 6 giorni di validità
 
             localStorage.setItem('osteria_coupon_id', idUnico);
             localStorage.setItem('osteria_coupon_expiry', expiryTime);
@@ -109,7 +116,6 @@
         document.getElementById('form-container').classList.add('hidden');
         document.getElementById('coupon-container').classList.remove('hidden');
 
-        // Genera il QR code che punta alla pagina di validazione della cassa
         const urlValidazione = `${SCRIPT_URL}?action=validate&id=${idUnico}`;
         document.getElementById("qrcode").innerHTML = "";
         new QRCode(document.getElementById("qrcode"), {
@@ -118,7 +124,6 @@
             height: 180
         });
 
-        // Gestione Timer
         const interval = setInterval(() => {
             const now = new Date().getTime();
             const distance = expiryTime - now;
@@ -135,7 +140,6 @@
             
             document.getElementById('timer').innerText = `Scade tra: ${days}g ${hours}h ${minutes}m`;
 
-            // Polling per verificare se il cassiere ha convalidato il coupon
             checkStatusBackend(idUnico, interval);
 
         }, 1000);

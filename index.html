@@ -9,7 +9,7 @@
     <style>
         body { font-family: Arial, sans-serif; background-color: #0f172a; color: #fff; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .card { background: #1e293b; padding: 30px; border-radius: 12px; max-width: 400px; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center; }
-        .logo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 2px solid #38bdf8; }
+        .logo { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 3px solid #38bdf8; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4); }
         input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; }
         button { background: #38bdf8; color: #0f172a; border: none; padding: 12px; width: 100%; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; }
         button:hover { background: #0ea5e9; }
@@ -37,7 +37,7 @@
     </form>
 </div>
 
-<!-- SCHERMATA 2: QR CODE E TIMER (VISIBILE ANCHE DOPO LA GENERAZIONE) -->
+<!-- SCHERMATA 2: QR CODE E TIMER -->
 <div class="card hidden" id="coupon-container">
     <img src="logo.jpg" alt="Osteria del Marinaio" class="logo">
     <h2>Il tuo Buono del 20%</h2>
@@ -56,10 +56,8 @@
 </div>
 
 <script>
-    // Inserisci qui l'URL della tua Web App di Google Apps Script
-    const SCRIPT_URL = "INSERISCI_QUI_URL_APPS_SCRIPT";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPyAyoV7c-lcD-TBO9zeiHh5B0SgKu7mDVSurjw2hI5M3ByBW2kEsbKJTE5h89qZY/exec";
 
-    // Controllo automatico al caricamento della pagina se esiste già un coupon attivo salvato
     window.addEventListener('DOMContentLoaded', () => {
         const savedId = localStorage.getItem('osteria_coupon_id');
         const savedExpiry = localStorage.getItem('osteria_coupon_expiry');
@@ -91,7 +89,6 @@
         const payload = { nome, cognome, numero, ip };
 
         try {
-            // Invio dei dati al backend Google Sheets tramite Apps Script
             await fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
@@ -100,7 +97,7 @@
             });
 
             const idUnico = 'id_' + Math.random().toString(36).substring(2, 15);
-            const expiryTime = new Date().getTime() + (6 * 24 * 60 * 60 * 1000); // 6 giorni di validità
+            const expiryTime = new Date().getTime() + (6 * 24 * 60 * 60 * 1000);
 
             localStorage.setItem('osteria_coupon_id', idUnico);
             localStorage.setItem('osteria_coupon_expiry', expiryTime);

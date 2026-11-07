@@ -7,10 +7,10 @@
     <!-- Libreria per generare il QR Code -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f8fafc; color: #1e293b; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .card { background: #ffffff; padding: 30px; border-radius: 12px; max-width: 400px; width: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; border: 1px solid #e2e8f0; }
+        body { font-family: Arial, sans-serif; background-color: #0f172a; color: #fff; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { background: #1e293b; padding: 30px; border-radius: 12px; max-width: 400px; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center; }
         
-        /* Logo con sfondo bianco e senza stacchi */
+        /* Logo ottimizzato con sfondo blu */
         .logo-container { width: 100%; display: flex; justify-content: center; margin-bottom: 20px; }
         .logo { 
             width: 220px; 
@@ -18,14 +18,13 @@
             object-fit: contain; 
         }
 
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; background: #f8fafc; color: #1e293b; }
-        input:focus { outline: none; border-color: #0284c7; background: #fff; }
-        button { background: #0284c7; color: #ffffff; border: none; padding: 12px; width: 100%; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; }
-        button:hover { background: #0369a1; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; background: #fff; color: #000; }
+        button { background: #38bdf8; color: #0f172a; border: none; padding: 12px; width: 100%; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #0ea5e9; }
         .hidden { display: none; }
-        #qrcode { background: #fff; padding: 15px; display: inline-block; border-radius: 8px; margin: 15px 0; border: 1px solid #e2e8f0; }
-        .timer { font-size: 1.2em; color: #d97706; font-weight: bold; margin: 10px 0; }
-        .review-btn { background: #16a34a; color: #fff; text-decoration: none; display: inline-block; padding: 12px 20px; border-radius: 6px; font-weight: bold; margin-top: 15px; }
+        #qrcode { background: #fff; padding: 15px; display: inline-block; border-radius: 8px; margin: 15px 0; }
+        .timer { font-size: 1.2em; color: #facc15; font-weight: bold; margin: 10px 0; }
+        .review-btn { background: #22c55e; color: #fff; text-decoration: none; display: inline-block; padding: 12px 20px; border-radius: 6px; font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -41,7 +40,7 @@
         <input type="text" id="nome" placeholder="Il tuo Nome" required>
         <input type="text" id="cognome" placeholder="Il tuo Cognome" required>
         <input type="tel" id="numero" placeholder="Il tuo Numero di Telefono" required>
-        <label style="font-size:0.8em; text-align:left; display:block; margin-top:10px; color: #64748b;">
+        <label style="font-size:0.8em; text-align:left; display:block; margin-top:10px;">
             <input type="checkbox" id="gdpr" required> Accetto il trattamento dei dati personali (GDPR)
         </label>
         <button type="submit">Prendi il Buono Sconto</button>
@@ -57,7 +56,7 @@
     <p>Mostra questo QR Code in cassa per convalidare lo sconto.</p>
     <div id="qrcode"></div>
     <div class="timer" id="timer">Scadenza: Caricamento...</div>
-    <p style="font-size: 0.9em; color: #64748b;">Questo buono è valido solo per te e scadrà tra 6 giorni.</p>
+    <p style="font-size: 0.9em; color: #94a3b8;">Questo buono è valido solo per te e scadrà tra 6 giorni.</p>
 </div>
 
 <!-- SCHERMATA 3: RINGRAZIAMENTO RECENSIONE -->
@@ -65,7 +64,7 @@
     <div class="logo-container">
         <img src="logo.jpg" alt="Osteria del Marinaio" class="logo">
     </div>
-    <h2 style="color: #16a34a;">🎉 Sconto Utilizzato!</h2>
+    <h2 style="color: #22c55e;">🎉 Sconto Utilizzato!</h2>
     <p>Grazie per aver cenato all'Osteria del Marinaio. Ti è piaciuta l'esperienza?</p>
     <a href="https://g.page/r/INSERISCI_LINK_RECENSIONI_GOOGLE" class="review-btn" target="_blank">Lascia una Recensione Google ⭐</a>
 </div>
